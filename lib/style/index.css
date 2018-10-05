@@ -1,0 +1,42 @@
+
+.nil-tree {
+  font-size: 12px; }
+  .nil-tree .nil-tree-loading-wrapper {
+    height: 20px;
+    line-height: 20px;
+    text-align: center; }
+  .nil-tree .nil-tree-item-wrapper {
+    height: 20px;
+    display: -ms-flexbox;
+    display: flex;
+    line-height: 20px;
+    cursor: default; }
+    .nil-tree .nil-tree-item-wrapper:hover {
+      background-color: #efefef; }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-icon,
+    .nil-tree .nil-tree-item-wrapper .nil-tree-indent {
+      overflow: hidden;
+      width: 16px;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-loading-icon {
+      background-image: url(images/loading.gif); }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-expander-icon {
+      background-image: url(images/arrows.gif);
+      background-position: 0 0; }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-expander-icon.open {
+      background-position: -16px 0; }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-parent {
+      background-image: url(images/folder.gif); }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-leaf {
+      background-image: url(images/leaf.gif); }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-checkbox {
+      background-image: url(images/unchecked.png); }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-checkbox.checked {
+      background-image: url(images/checked.png); }
+    .nil-tree .nil-tree-item-wrapper .nil-tree-label {
+      -ms-flex: 1 1;
+          flex: 1 1;
+      padding: 0 5px; }
+  .nil-tree .nil-tree-item-expanded .nil-tree-icon-parent {
+    background-image: url(images/folder-open.gif); }

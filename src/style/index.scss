@@ -1,0 +1,74 @@
+$prefix: nil-tree;
+
+.#{$prefix}{
+	font-size:12px;
+	
+	.#{$prefix}-loading-wrapper {
+		height:20px;
+		line-height:20px;
+		text-align:center;	
+	}
+
+	.#{$prefix}-item-wrapper {
+		height:20px;
+		display: flex;
+		line-height:20px;
+		cursor:default;
+		
+		&:hover {
+			background-color: #efefef;	
+		}
+		
+		.#{$prefix}-icon,
+		.#{$prefix}-indent {
+			overflow:hidden;
+			width: 16px;
+			background-position:center;
+			background-repeat:no-repeat;
+		}
+		
+		.#{$prefix}-loading-icon {
+			background-image:url(images/loading.gif);
+		}
+		
+		.#{$prefix}-expander-icon {
+			background-image:url(images/arrows.gif);
+			background-position: 0 0;
+		}
+		
+		.#{$prefix}-expander-icon.open {
+			background-position: -16px 0;
+		}
+		
+		.#{$prefix}-icon-parent {
+			background-image:url(images/folder.gif);
+		}
+		
+		.#{$prefix}-icon-leaf {
+			background-image:url(images/leaf.gif);
+		}
+		
+		.#{$prefix}-icon-checkbox {
+			background-image:url(images/unchecked.png);
+		}
+		
+		.#{$prefix}-icon-checkbox.checked {
+			background-image:url(images/checked.png);
+		}
+		
+		.#{$prefix}-label {
+			flex: 1;
+			padding:0 5px;		
+		}
+		
+		
+	}
+	
+	.#{$prefix}-item-expanded {
+		.#{$prefix}-icon-parent {
+			background-image:url(images/folder-open.gif);
+		}
+	}
+
+}
+
