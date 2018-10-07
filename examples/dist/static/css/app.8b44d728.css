@@ -1,3 +1,25 @@
+.container {
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%; }
+
+.slider {
+  width: 200px;
+  border-right: 1px solid #f2f2fe; }
+  .slider > div {
+    padding: 10px;
+    border-bottom: 1px solid #f2f2fe;
+    cursor: pointer; }
+  .slider .active {
+    background: #3399ff;
+    color: #FFF; }
+
+.content {
+  overflow: auto;
+  padding: 10px;
+  -ms-flex: 1 1;
+      flex: 1 1; }
+
 .nil-tree {
   font-size: 12px; }
   .nil-tree .nil-tree-loading-wrapper {
@@ -41,4 +63,4 @@
     background-image: url(data:image/gif;base64,R0lGODlhEAAQAKU9ADFKY0L/QplnAZpoApxqBJ5sBqBuCKJwCqNxC6RyDKVzDad1D6x6FLB+GLOBG7WCHbeEH7qHIr2KJcaaGcaaGsKPKsiVMMmWMcuYM8yZNMmgIc+iJte4QNq/bOKzQ+LBUP3VcP/bdfDkev/kf5SlvZylvbe3t5ytxqW11qm92r3GxrnK5P/XhP/rhP/viffwif/4k///mf//nP//pcTExMXFxc3NzdHR0cbW69jh8efv9+vz//r7/P///////////yH5BAEAAD8ALAAAAAAQABAAAAaBwJ9wSCwSMxnMxWI89p48XqX5y/RkWGxPEoE8HA0h5prNPp+M2+/Sg7nfcNmiNqnb7/VPC0GbxMplMR0TLAZ9f3BvMi8TIAU0P34uk5STMxoeBJB+MiOenyMzHBsDkJExIamqqSIUAjVCEwqzswkHBgUEAyY2QzY0wMHCvVTFxkVBADs=); }
 
 
-/*# sourceMappingURL=app.ec99e2cf.css.map*/
+/*# sourceMappingURL=app.8b44d728.css.map*/

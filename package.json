@@ -7,6 +7,8 @@
         "classnames": "^2.2.6",
         "prop-types": "^15.6.2",
         "react": "^16.5.2",
+        "@babel/runtime": "^7.1.2",
+        "@babel/runtime-corejs2": "^7.1.2",
         "react-dom": "^16.5.2"
     },
     "devDependencies": {
@@ -38,8 +40,6 @@
         "@babel/preset-env": "^7.1.0",
         "@babel/preset-flow": "^7.0.0",
         "@babel/preset-react": "^7.0.0",
-        "@babel/runtime": "^7.1.2",
-        "@babel/runtime-corejs2": "^7.1.2",
         "autoprefixer": "^9.1.5",
         "babel-loader": "^8.0.4",
         "chalk": "^2.4.1",
@@ -67,16 +67,17 @@
         "webpack": "^4.20.2",
         "webpack-dev-server": "^3.1.9",
         "webpack-manifest-plugin": "^2.0.4",
-        "webpack-merge": "^4.1.4"
+        "webpack-merge": "^4.1.4",
+        "xtree-store": "^1.0.1"
     },
-	"files": [
-		"*.js",
-		"lib",
-		"*.md"
-	],
+    "files": [
+        "*.js",
+        "lib",
+        "*.md"
+    ],
     "scripts": {
-        "examples": "node build/examples",
-        "build": "transform-es src -d lib -c --corejs false --helpers false -w",
+        "demo": "node build/examples",
+        "start": "transform-es src -d lib -c -w",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

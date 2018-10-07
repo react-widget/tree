@@ -1,7 +1,7 @@
 import React, {Fragment, Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {isPromiseLike} from './utils';
+import {isPromiseLike, arrayFill} from './utils';
 
 export default class TreeNode extends Component{
 	
@@ -40,7 +40,7 @@ export default class TreeNode extends Component{
  		
 		if( renderIndentIcons ) return renderIndentIcons(node);
 		
-		const indents = Array(depth);
+		const indents = arrayFill(Array(depth), 0);
 		
 		return indents.map( (v , i)=> <span key={i} className={`${prefixCls}-indent`} /> );
 	}
