@@ -383,8 +383,7 @@ function (_Component) {
   }, {
     key: "renderExpanderIcon",
     value: function renderExpanderIcon() {
-      var _classNames,
-          _this2 = this;
+      var _classNames;
 
       var _this$props2 = this.props,
           parentProps = _this$props2.parentProps,
@@ -394,10 +393,7 @@ function (_Component) {
       var isLeaf = this.isLeaf(node);
       var classes = (0, _classnames.default)((_classNames = {}, (0, _defineProperty2.default)(_classNames, "".concat(prefixCls, "-icon"), true), (0, _defineProperty2.default)(_classNames, "".concat(prefixCls, "-expander-icon"), !isLeaf), (0, _defineProperty2.default)(_classNames, "open", !isLeaf && this.isExpanded(node)), (0, _defineProperty2.default)(_classNames, "".concat(prefixCls, "-indent"), isLeaf), _classNames));
       var expanderProps = {
-        className: classes,
-        onClick: function onClick(e) {
-          _this2.toggleExpand();
-        }
+        className: classes
       };
       if (renderExpanderIcon) return renderExpanderIcon(node, expanderProps, this);
       return _react.default.createElement("span", expanderProps);
@@ -479,7 +475,7 @@ function (_Component) {
   }, {
     key: "renderChildNodes",
     value: function renderChildNodes() {
-      var _this3 = this;
+      var _this2 = this;
 
       var _this$props8 = this.props,
           node = _this$props8.node,
@@ -498,10 +494,10 @@ function (_Component) {
         if (!node.expanded) return;
         node.loading = false;
 
-        _this3.setState({
+        _this2.setState({
           childNodes: childNodes
         }, function () {
-          _this3.state.childNodes = null;
+          _this2.state.childNodes = null;
         });
       };
 
@@ -570,7 +566,7 @@ function (_Component) {
     key: "renderNode",
     value: function renderNode() {
       var _classNames5,
-          _this4 = this;
+          _this3 = this;
 
       var _this$props11 = this.props,
           node = _this$props11.node,
@@ -592,34 +588,34 @@ function (_Component) {
       var nodeProps = {
         className: (0, _classnames.default)("".concat(prefixCls, "-item-wrapper"), (_classNames5 = {}, (0, _defineProperty2.default)(_classNames5, node.cls, node.cls), (0, _defineProperty2.default)(_classNames5, "".concat(prefixCls, "-item-expanded"), this.isExpanded(node)), _classNames5)),
         onClick: function onClick(e) {
-          onNodeClick(node, e, _this4);
+          onNodeClick(node, e, _this3);
         },
         onDoubleClick: function onDoubleClick(e) {
-          onNodeDoubleClick(node, e, _this4);
+          onNodeDoubleClick(node, e, _this3);
         },
         onContextMenu: function onContextMenu(e) {
-          onNodeContextMenu(node, e, _this4);
+          onNodeContextMenu(node, e, _this3);
         },
         onMouseDown: function onMouseDown(e) {
-          onNodeMouseDown(node, e, _this4);
+          onNodeMouseDown(node, e, _this3);
         },
         onMouseUp: function onMouseUp(e) {
-          onNodeMouseUp(node, e, _this4);
+          onNodeMouseUp(node, e, _this3);
         },
         onMouseEnter: function onMouseEnter(e) {
-          onNodeMouseEnter(node, e, _this4);
+          onNodeMouseEnter(node, e, _this3);
         },
         onMouseLeave: function onMouseLeave(e) {
-          onNodeMouseLeave(node, e, _this4);
+          onNodeMouseLeave(node, e, _this3);
         },
         onMouseOver: function onMouseOver(e) {
-          onNodeMouseOver(node, e, _this4);
+          onNodeMouseOver(node, e, _this3);
         },
         onMouseOut: function onMouseOut(e) {
-          onNodeMouseOut(node, e, _this4);
+          onNodeMouseOut(node, e, _this3);
         },
         onMouseMove: function onMouseMove(e) {
-          onNodeMouseMove(node, e, _this4);
+          onNodeMouseMove(node, e, _this3);
         }
       };
       return _react.default.createElement("div", nodeProps, renderNode ? renderNode(node, nodeProps, this) : _react.default.createElement(_react.Fragment, null, this.renderIndentIcons(), this.isLoading(node) ? this.renderLoadingIcon() : this.renderExpanderIcon(), showIcon ? this.renderIcon() : null, checkable ? this.renderCheckbox() : null, this.renderLabel(), this.renderExtIcons()));
@@ -2994,4 +2990,4 @@ module.exports = __webpack_require__(/*! D:\wamp\www\github-projects\nil-compone
 /***/ })
 
 /******/ });
-//# sourceMappingURL=app.4fea14c3.js.map
+//# sourceMappingURL=app.63695789.js.map

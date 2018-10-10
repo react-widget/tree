@@ -59,9 +59,6 @@ export default class TreeNode extends Component{
 		
 		const expanderProps = {
 			className: classes,
-			onClick: e => {
-				this.toggleExpand();
-			}
 		};
 		
 		if( renderExpanderIcon ) return renderExpanderIcon(node, expanderProps, this);
@@ -195,7 +192,7 @@ export default class TreeNode extends Component{
 	isLoading(node){
 		return node.loading;	
 	}
-	
+	//deleted
 	toggleExpand = () => {
 		const {node} = this.props;
 		if( this.isLoading( node ) ) return;
