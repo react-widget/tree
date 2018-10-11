@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TreeNode from './TreeNode';
+import ChildNodesContainer from './ChildNodesContainer';
 
 const noop = () => { };
 
@@ -20,9 +21,10 @@ export default class Tree extends React.Component {
         loadData: null,
         showIcon: true,
         checkable: false,
+        maxDepth: 50, //最大层级50
         //showLine: false, //自定义支持
         //animate: false, //自定义支持
-        childWrapperComponent: 'div',
+        childNodesWrapperComponent: ChildNodesContainer,
         renderIndentIcons: null,
         renderExpanderIcon: null,
         renderLoadingIcon: null,
@@ -33,7 +35,6 @@ export default class Tree extends React.Component {
         renderNode: null,
 
         //events
-
         onNodeClick: noop,
         onNodeDoubleClick: noop,
         onNodeContextMenu: noop,
@@ -54,7 +55,8 @@ export default class Tree extends React.Component {
             checked: false,
             pid: null,
             root: true,
-            depth: 0,
+            // depth: 0,
+            relativeDepth: 0,
         }
     }
 

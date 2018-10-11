@@ -5,6 +5,8 @@ import data from '../data.json';
 
 export default class DEMO extends Component {
 
+    dataStore = {}
+
     constructor(props) {
         super(props);
 
@@ -15,14 +17,23 @@ export default class DEMO extends Component {
     }
 
     loadData = node => {
-        const store = this.store;
-        return store.getChildren(node.id);
+
+        if (this.dataStore[node.id]) return this.dataStore[node.id];
+
+        return new Promise(resolve => {
+            const store = this.store;
+            setTimeout(() => {
+                const childs = store.getChildren(node.id);
+                this.dataStore[node.id] = childs;
+                resolve(childs)
+            }, 500);
+        });
     }
 
     toggleExpand = (node, e, t) => {
         node.expanded = !node.expanded;
         this.forceUpdate();
-        //or
+        // or
         // t.toggleExpand()
     }
 

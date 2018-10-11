@@ -4,7 +4,7 @@ import DemoList from './DemoList';
 export default class Demo extends Component {
 
     state = {
-        current: null
+        current: DemoList[0]
     }
 
     onDemoChange(item, e) {
