@@ -1,9 +1,8 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TreeNode from './TreeNode';
-import ChildNodesContainer from './ChildNodesContainer';
+import ChildNodesWrapper from './ChildNodesWrapper';
 
 const noop = () => { };
 
@@ -17,14 +16,14 @@ export default class Tree extends React.Component {
         prefixCls: 'nil-tree',
         className: '',
         rootId: null,
-        loadingText: '加载中...',
+        loadingText: 'Loading...',
         loadData: null,
         showIcon: true,
         checkable: false,
         maxDepth: 50, //最大层级50
         //showLine: false, //自定义支持
         //animate: false, //自定义支持
-        childNodesWrapperComponent: ChildNodesContainer,
+        childNodesWrapperComponent: ChildNodesWrapper,
         renderIndentIcons: null,
         renderExpanderIcon: null,
         renderLoadingIcon: null,
