@@ -31,10 +31,10 @@ export default class DEMO extends Component {
     }
 
     toggleExpand = (node, e, t) => {
-        node.expanded = !node.expanded;
-        this.forceUpdate();
+        // node.expanded = !node.expanded;
+        // this.forceUpdate();
         // or
-        // t.toggleExpand()
+        t.toggleExpand()
     }
 
     render() {
