@@ -30,11 +30,15 @@ export default class NodeItem extends Component {
 
         if (relativeDepth <= 0) return null;
 
-        if (renderIndentIcons) return renderIndentIcons(node);
+        const indentProps = {
+            className: `${prefixCls}-indent`,
+        };
+
+        if (renderIndentIcons) return renderIndentIcons(node, indentProps, this);
 
         const indents = arrayFill(Array(relativeDepth), 0);
 
-        return indents.map((v, i) => <span key={i} className={`${prefixCls}-indent`} />);
+        return indents.map((v, i) => <span {...indentProps} key={i} />);
     }
 
     renderExpanderIcon() {
@@ -62,21 +66,23 @@ export default class NodeItem extends Component {
         const { parentProps, node } = this.props;
         const { renderLoadingIcon, prefixCls } = parentProps;
 
-        if (renderLoadingIcon) return renderLoadingIcon(node, this);
-
         const classes = classNames({
             [`${prefixCls}-icon`]: true,
             [`${prefixCls}-loading-icon`]: true,
         });
 
-        return <span className={classes} />;
+        const loadingProps = {
+            className: classes,
+        };
+
+        if (renderLoadingIcon) return renderLoadingIcon(node, loadingProps, this);
+
+        return <span {...loadingProps} />;
     }
 
     renderIcon() {
         const { parentProps, node } = this.props;
         const { renderIcon, prefixCls } = parentProps;
-
-        if (renderIcon) return renderIcon(node, this);
 
         const leaf = isLeaf(node);
         const classes = classNames({
@@ -86,14 +92,18 @@ export default class NodeItem extends Component {
             [node.iconCls]: node.iconCls,
         });
 
-        return <span className={classes} />;
+        const iconProps = {
+            className: classes,
+        };
+
+        if (renderIcon) return renderIcon(node, iconProps, this);
+
+        return <span {...iconProps} />;
     }
 
     renderCheckbox() {
         const { parentProps, node } = this.props;
         const { renderCheckbox, prefixCls } = parentProps;
-
-        if (renderCheckbox) return renderCheckbox(node, this);
 
         const classes = classNames({
             [`${prefixCls}-icon`]: true,
@@ -101,7 +111,13 @@ export default class NodeItem extends Component {
             checked: !!node.checked,
         });
 
-        return <span className={classes} />;
+        const checkboxProps = {
+            className: classes,
+        };
+
+        if (renderCheckbox) return renderCheckbox(node, checkboxProps, this);
+
+        return <span {...checkboxProps} />;
     }
 
     renderLabel() {
@@ -121,7 +137,7 @@ export default class NodeItem extends Component {
         const { parentProps, node } = this.props;
         const { renderExtIcons, prefixCls } = parentProps;
 
-        if (renderExtIcons) return renderExtIcons(node, this);
+        if (renderExtIcons) return renderExtIcons(node, {}, this);
     }
 
     render() {
