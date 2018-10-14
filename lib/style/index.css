@@ -5,36 +5,55 @@
     height: 20px;
     line-height: 20px;
     text-align: center; }
-  .nil-tree .nil-tree-item-wrapper {
+  .nil-tree .nil-tree-item {
     height: 20px;
     display: -ms-flexbox;
     display: flex;
     line-height: 20px;
     cursor: default; }
-    .nil-tree .nil-tree-item-wrapper:hover {
+    .nil-tree .nil-tree-item:hover {
       background-color: #efefef; }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-icon,
-    .nil-tree .nil-tree-item-wrapper .nil-tree-indent {
+    .nil-tree .nil-tree-item .nil-tree-icon,
+    .nil-tree .nil-tree-item .nil-tree-empty,
+    .nil-tree .nil-tree-item .nil-tree-indent {
       overflow: hidden;
       width: 16px;
       background-position: center;
       background-repeat: no-repeat; }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-loading-icon {
+    .nil-tree .nil-tree-item .nil-tree-line {
+      background-image: url(images/elbow-line.gif); }
+    .nil-tree .nil-tree-item .nil-tree-elbow {
+      background-image: url(images/elbow.gif); }
+    .nil-tree .nil-tree-item .nil-tree-elbow-end {
+      background-image: url(images/elbow-end.gif); }
+    .nil-tree .nil-tree-item .nil-tree-loading-icon {
       background-image: url(images/loading.gif); }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-expander-icon {
+    .nil-tree .nil-tree-item .nil-tree-expander-icon {
       background-image: url(images/arrows.gif);
       background-position: 0 0; }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-expander-icon.open {
+    .nil-tree .nil-tree-item .nil-tree-expander-icon.open {
       background-position: -16px 0; }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-parent {
+    .nil-tree .nil-tree-item .nil-tree-expander {
+      background-image: url(images/elbow-plus.gif);
+      background-position: center; }
+    .nil-tree .nil-tree-item .nil-tree-expander.open {
+      background-image: url(images/elbow-minus.gif);
+      background-position: center; }
+    .nil-tree .nil-tree-item .nil-tree-expander-end {
+      background-image: url(images/elbow-end-plus.gif);
+      background-position: center; }
+    .nil-tree .nil-tree-item .nil-tree-expander-end.open {
+      background-image: url(images/elbow-end-minus.gif);
+      background-position: center; }
+    .nil-tree .nil-tree-item .nil-tree-icon-parent {
       background-image: url(images/folder.gif); }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-leaf {
+    .nil-tree .nil-tree-item .nil-tree-icon-leaf {
       background-image: url(images/leaf.gif); }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-checkbox {
+    .nil-tree .nil-tree-item .nil-tree-icon-checkbox {
       background-image: url(images/unchecked.png); }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-icon-checkbox.checked {
+    .nil-tree .nil-tree-item .nil-tree-icon-checkbox.checked {
       background-image: url(images/checked.png); }
-    .nil-tree .nil-tree-item-wrapper .nil-tree-label {
+    .nil-tree .nil-tree-item .nil-tree-label {
       -ms-flex: 1 1;
           flex: 1 1;
       padding: 0 5px; }

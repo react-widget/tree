@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 export default class ChildNodesContainer extends Component {
@@ -12,8 +12,8 @@ export default class ChildNodesContainer extends Component {
     };
 
     render() {
-        const { expanded, children, ...others } = this.props;
+        const { expanded, children } = this.props;
 
-        return expanded ? <div {...others}>{children()}</div> : null;
+        return expanded ? <Fragment>{children()}</Fragment> : null;
     }
 }

@@ -119,17 +119,32 @@ export default class TreeNode extends Component {
 
     render() {
         const { node, isRoot, parentProps } = this.props;
-        const { prefixCls } = parentProps;
+        const { prefixCls, nodeItemWrapperComponent: NodeItemWrapperComponent } = parentProps;
 
         if (isRoot) {
             return this.renderChildNodes();
         }
 
+        // return (
+        //     <div className={`${prefixCls}-item`}>
+        //         <NodeItem node={node} self={this} parentProps={parentProps} />
+        //         {this.renderChildNodesWrapper()}
+        //     </div>
+        // );
+
+        const wrapProps = {};
+
+        if (NodeItemWrapperComponent !== Fragment) {
+            Object.assign(wrapProps, {
+                node,
+            })
+        }
+
         return (
-            <div className={`${prefixCls}-item`}>
+            <NodeItemWrapperComponent {...wrapProps}>
                 <NodeItem node={node} self={this} parentProps={parentProps} />
                 {this.renderChildNodesWrapper()}
-            </div>
+            </NodeItemWrapperComponent>
         );
     }
 }

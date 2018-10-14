@@ -140,14 +140,10 @@ export default class NodeItem extends Component {
         if (renderExtIcons) return renderExtIcons(node, {}, this);
     }
 
-    render() {
+    getNodeProps() {
         const { node, parentProps, self } = this.props;
-
         const {
             prefixCls,
-            renderNode,
-            showIcon,
-            checkable,
             onNodeClick,
             onNodeDoubleClick,
             onNodeContextMenu,
@@ -162,7 +158,8 @@ export default class NodeItem extends Component {
 
         const nodeProps = {
             className: classNames({
-                [`${prefixCls}-item-wrapper`]: true,
+                [`${prefixCls}-item`]: true,
+                //[`${prefixCls}-item-wrapper`]: true,
                 [node.cls]: node.cls,
                 [`${prefixCls}-item-expanded`]: isExpanded(node),
             }),
@@ -198,10 +195,16 @@ export default class NodeItem extends Component {
             }
         };
 
-        return renderNode ?
-            renderNode(node, nodeProps, this) :
+        return nodeProps;
+    }
+
+    renderNode() {
+        const { node, parentProps } = this.props;
+        const { showIcon, checkable } = parentProps
+
+        return (
             <div
-                {...nodeProps}
+                {...this.getNodeProps()}
             >
                 <Fragment>
                     {this.renderIndentIcons()}
@@ -211,7 +214,19 @@ export default class NodeItem extends Component {
                     {this.renderLabel()}
                     {this.renderExtIcons()}
                 </Fragment>
-            </div>;
+            </div>
+        );
+    }
+
+    render() {
+        const { node, parentProps } = this.props;
+        const {
+            renderNode,
+        } = parentProps;
+
+        return renderNode ?
+            renderNode(node, this.getNodeProps(), this) :
+            this.renderNode();
     }
 
 }
