@@ -19,6 +19,7 @@ export default class Tree extends React.Component {
         loadingText: 'Loading...',
         loadData: null,
         showIcon: true,
+        showExpanderIcon: true,
         checkable: false,
         maxDepth: 50, //最大层级50
 

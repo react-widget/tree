@@ -200,7 +200,7 @@ export default class NodeItem extends Component {
 
     renderNode() {
         const { node, parentProps } = this.props;
-        const { showIcon, checkable } = parentProps
+        const { showIcon, showExpanderIcon, checkable } = parentProps
 
         return (
             <div
@@ -208,7 +208,13 @@ export default class NodeItem extends Component {
             >
                 <Fragment>
                     {this.renderIndentIcons()}
-                    {isLoading(node) ? this.renderLoadingIcon() : this.renderExpanderIcon()}
+                    {
+                        isLoading(node) ?
+                            this.renderLoadingIcon() :
+                            showExpanderIcon ?
+                                this.renderExpanderIcon() :
+                                null
+                    }
                     {showIcon ? this.renderIcon() : null}
                     {checkable ? this.renderCheckbox() : null}
                     {this.renderLabel()}
