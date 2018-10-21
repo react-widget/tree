@@ -78,6 +78,7 @@
     ],
     "scripts": {
         "demo": "node build/examples",
+        "docs": "node build/docs",
         "start": "transform-es src -d lib -c -w",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
