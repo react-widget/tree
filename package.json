@@ -1,6 +1,6 @@
 {
-    "name": "react-nil-tree",
-    "version": "1.1.0",
+    "name": "react-widget-tree",
+    "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "dependencies": {
@@ -84,9 +84,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/react-nil-components/tree.git"
+        "url": "git+https://github.com/react-widget/tree.git"
     },
     "keywords": [
+        "react-widget",
         "tree",
         "react-tree",
         "react",
@@ -95,7 +96,7 @@
     "author": "nobo.zhou@foxmail.com",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/react-nil-components/tree/issues"
+        "url": "https://github.com/react-widget/tree/issues"
     },
-    "homepage": "https://github.com/react-nil-components/tree#readme"
+    "homepage": "https://github.com/react-widget/tree#readme"
 }
