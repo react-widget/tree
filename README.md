@@ -1,4 +1,4 @@
-# react-nil-tree
+# react-widget-tree
 
 `npm install --save react-widget-tree`
 
