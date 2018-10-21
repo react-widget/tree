@@ -9,7 +9,7 @@ $prefix: nil-tree;
 		text-align:center;	
 	}
 
-	.#{$prefix}-item-wrapper {
+	.#{$prefix}-item {
 		height:20px;
 		display: flex;
 		line-height:20px;
@@ -20,11 +20,24 @@ $prefix: nil-tree;
 		}
 		
 		.#{$prefix}-icon,
-		.#{$prefix}-indent {
+        .#{$prefix}-empty,
+        .#{$prefix}-indent {
 			overflow:hidden;
 			width: 16px;
 			background-position:center;
 			background-repeat:no-repeat;
+        }
+        
+        .#{$prefix}-line {
+			background-image:url(images/elbow-line.gif);
+        }
+        
+        .#{$prefix}-elbow {
+			background-image:url(images/elbow.gif);
+        }
+        
+        .#{$prefix}-elbow-end {
+			background-image:url(images/elbow-end.gif);
 		}
 		
 		.#{$prefix}-loading-icon {
@@ -38,7 +51,27 @@ $prefix: nil-tree;
 		
 		.#{$prefix}-expander-icon.open {
 			background-position: -16px 0;
+        }
+
+        .#{$prefix}-expander {
+            background-image: url(images/elbow-plus.gif);
+            background-position: center;
 		}
+        
+        .#{$prefix}-expander.open {
+            background-image: url(images/elbow-minus.gif);
+            background-position: center;
+        }
+        
+        .#{$prefix}-expander-end {
+            background-image: url(images/elbow-end-plus.gif);
+            background-position: center;
+        }
+
+        .#{$prefix}-expander-end.open {
+            background-image: url(images/elbow-end-minus.gif);
+            background-position: center;
+        }
 		
 		.#{$prefix}-icon-parent {
 			background-image:url(images/folder.gif);

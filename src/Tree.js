@@ -1,8 +1,8 @@
-import React from 'react';
-import { findDOMNode } from 'react-dom';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TreeNode from './TreeNode';
+import ChildNodesWrapper from './ChildNodesWrapper';
 
 const noop = () => { };
 
@@ -16,13 +16,18 @@ export default class Tree extends React.Component {
         prefixCls: 'nil-tree',
         className: '',
         rootId: null,
-        loadingText: '加载中...',
+        loadingLabel: 'Loading...',
+        loadingComponent: 'div',
         loadData: null,
         showIcon: true,
+        showExpanderIcon: true,
         checkable: false,
-        //showLine: false, //自定义支持
-        //animate: false, //自定义支持
-        childWrapperComponent: 'div',
+        maxDepth: 50, //最大层级50
+
+        rootComponent: 'div',
+        childNodesWrapperComponent: ChildNodesWrapper,
+        nodeItemWrapperComponent: Fragment,
+        //自定义
         renderIndentIcons: null,
         renderExpanderIcon: null,
         renderLoadingIcon: null,
@@ -31,9 +36,7 @@ export default class Tree extends React.Component {
         renderLabel: null,
         renderExtIcons: null,
         renderNode: null,
-
         //events
-
         onNodeClick: noop,
         onNodeDoubleClick: noop,
         onNodeContextMenu: noop,
@@ -47,29 +50,57 @@ export default class Tree extends React.Component {
     };
 
     getRootNode() {
+        const rootId = this.props.rootId;
         return {
-            id: this.props.rootId,
-            leaf: false,
-            expanded: true,
-            checked: false,
-            pid: null,
-            root: true,
-            depth: 0,
+            //id: this.props.rootId,
+            get id() {
+                return rootId;
+            },
+            //leaf: false,
+            get leaf() {
+                return false;
+            },
+            //expanded: true,
+            get expanded() {
+                return true;
+            },
+            //checked: false,
+            get checked() {
+                return false;
+            },
+            //pid: null,
+            get pid() {
+                return null;
+            },
+            ///root: true,
+            get root() {
+                return true;
+            },
+            // depth: 0, //deprecated
+            //relativeDepth: 0,
+            get relativeDepth() {
+                return 0;
+            },
+            loading: false,
         }
     }
 
     render() {
-        const { prefixCls, className, rootId, loadData } = this.props;
+        const { prefixCls, className, rootComponent: Component } = this.props;
 
-        const classes = classNames({
+        let classes = classNames({
             [prefixCls]: true,
             [className]: className,
         });
 
+        if (Fragment === Component) {
+            classes = {};
+        }
+
         return (
-            <div className={classes}>
+            <Component className={classes}>
                 <TreeNode parentProps={this.props} node={this.getRootNode()} isRoot />
-            </div>
+            </Component>
         );
     }
 }

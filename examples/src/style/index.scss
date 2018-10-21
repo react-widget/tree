@@ -25,3 +25,14 @@
     
     flex: 1;
 }
+
+.table-tree {
+	border-collapse:collapse;
+	
+	tbody tr:hover {
+		background-color: #efefef;		
+	}
+	td {
+		border-bottom:1px solid #F2F2F2;	
+	}
+}

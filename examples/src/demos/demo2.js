@@ -5,6 +5,8 @@ import data from '../data.json';
 
 export default class DEMO extends Component {
 
+    dataStore = {}
+
     constructor(props) {
         super(props);
 
@@ -15,25 +17,32 @@ export default class DEMO extends Component {
     }
 
     loadData = node => {
-        const store = this.store;
-        return store.getChildren(node.id);
+
+        if (this.dataStore[node.id]) return this.dataStore[node.id];
+
+        return new Promise(resolve => {
+            const server = this.store;
+            setTimeout(() => {
+                const childs = server.getChildren(node.id);
+                this.dataStore[node.id] = childs;
+                resolve(childs)
+            }, 500);
+        });
     }
 
     toggleExpand = (node, e, t) => {
-        node.expanded = !node.expanded;
-        node.checked = !node.checked;
-        this.forceUpdate();
-        //or
-        // t.toggleExpand()
+        // node.expanded = !node.expanded;
+        // this.forceUpdate();
+        // or
+        t.toggleExpand()
     }
-    //checkable的选择状态需要通过回调设置checked
+
     render() {
         return (
             <NilTree
                 onNodeClick={this.toggleExpand}
                 loadData={this.loadData}
                 showIcon
-                checkable
             />
         );
     }
