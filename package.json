@@ -1,6 +1,6 @@
 {
     "name": "react-nil-tree",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "",
     "main": "index.js",
     "dependencies": {
@@ -84,13 +84,18 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/nil-components/tree.git"
+        "url": "git+https://github.com/react-nil-components/tree.git"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "keywords": [
+        "tree",
+        "react-tree",
+        "react",
+        "treeview"
+    ],
+    "author": "nobo.zhou@foxmail.com",
+    "license": "MIT",
     "bugs": {
-        "url": "https://github.com/nil-components/tree/issues"
+        "url": "https://github.com/react-nil-components/tree/issues"
     },
-    "homepage": "https://github.com/nil-components/tree#readme"
+    "homepage": "https://github.com/react-nil-components/tree#readme"
 }
