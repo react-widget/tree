@@ -23,6 +23,23 @@ export default class TreeNode extends Component {
         childNodes: null,
     };
 
+    _shouldUpdate = false;
+
+    componentDidMount() {
+        this.shouldUpdateTreeNode();
+    }
+
+    componentDidUpdate() {
+        this.shouldUpdateTreeNode();
+    }
+
+    shouldUpdateTreeNode() {
+        if (this._shouldUpdate) {
+            this._shouldUpdate = false;
+            this.forceUpdate();
+        }
+    }
+
     //deleted
     toggleExpand = () => {
         const { node } = this.props;
@@ -32,12 +49,12 @@ export default class TreeNode extends Component {
     }
 
     renderLoadingNode() {
-        const { prefixCls, loadingText } = this.props.parentProps;
+        const { prefixCls, loadingLabel, loadingComponent: LoadingComponent } = this.props.parentProps;
 
-        if (!loadingText) return null;
+        if (!loadingLabel) return null;
 
         return (
-            <div className={`${prefixCls}-loading-wrapper`}>{loadingText}</div>
+            <LoadingComponent className={`${prefixCls}-loading-wrapper`}>{loadingLabel}</LoadingComponent>
         );
     }
 
@@ -64,6 +81,7 @@ export default class TreeNode extends Component {
         };
 
         const success = childNodes => {
+            this._shouldUpdate = false;
             node.loading = false;
             const expanded = isExpanded(node);
             this.setState({
@@ -83,7 +101,8 @@ export default class TreeNode extends Component {
             async = true;
             node.loading = true;
 
-            this.forceUpdate();
+            this._shouldUpdate = true;
+            //this.forceUpdate();
 
             results
                 .then(success)
@@ -111,7 +130,7 @@ export default class TreeNode extends Component {
 
         return leaf ?
             null :
-            <ChildNodesWrapper expanded={shouldRender} className={`${prefixCls}-child-wrapper`}>
+            <ChildNodesWrapper expanded={shouldRender} node={node} className={`${prefixCls}-child-wrapper`}>
                 {() => this.renderChildNodes()}
             </ChildNodesWrapper>
             ;
@@ -119,7 +138,7 @@ export default class TreeNode extends Component {
 
     render() {
         const { node, isRoot, parentProps } = this.props;
-        const { prefixCls, nodeItemWrapperComponent: NodeItemWrapperComponent } = parentProps;
+        const { nodeItemWrapperComponent: NodeItemWrapperComponent } = parentProps;
 
         if (isRoot) {
             return this.renderChildNodes();

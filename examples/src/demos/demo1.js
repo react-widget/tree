@@ -21,17 +21,19 @@ export default class DEMO extends Component {
 
     toggleExpand = (node, e, t) => {
         node.expanded = !node.expanded;
+        node.checked = !node.checked;
         this.forceUpdate();
         //or
         // t.toggleExpand()
     }
-
+    //checkable的选择状态需要通过回调设置checked
     render() {
         return (
             <NilTree
                 onNodeClick={this.toggleExpand}
                 loadData={this.loadData}
                 showIcon
+                checkable
             />
         );
     }

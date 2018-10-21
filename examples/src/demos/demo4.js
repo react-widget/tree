@@ -4,17 +4,25 @@ import TreeStore from 'xtree-store';
 import NilTree from 'nil-tree';
 import data from '../data.json';
 
+
+
 class childNodesWrapperComponent extends Component {
 
+    _timer = null
+
     componentDidMount() {
+
+        if (this._timer) {
+            clearTimeout(this._timer)
+        }
+
         const dom = findDOMNode(this);
         if (dom) {
-            dom.offsetTop;
-            setTimeout(() => {
-                dom.style.height = dom.scrollHeight + 'px';
-            }, 0);
-            setTimeout(() => {
+            dom.style.height = dom.scrollHeight + 'px';
+
+            this._timer = setTimeout(() => {
                 dom.style.height = 'auto';
+                this._timer = null;
             }, 250);
         }
 
@@ -27,7 +35,11 @@ class childNodesWrapperComponent extends Component {
     render() {
         const { children, expanded, ...others } = this.props;
 
-        return !expanded ? null :
+        if (!expanded) return null;
+
+        const childs = children();
+
+        return !Array.isArray(childs) ? null :
             (
                 <div {...others} style={{
                     transitionProperty: 'all',
@@ -41,7 +53,9 @@ class childNodesWrapperComponent extends Component {
             );
     }
 }
-
+/**
+ * 通过自定义childNodesWrapperComponent属性来实现动画效果
+ */
 export default class DEMO extends Component {
 
     dataStore = {}
