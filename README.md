@@ -1,6 +1,6 @@
-# nil-tree
+# react-nil-tree
 
-`npm install --save nil-tree`
+`npm install --save react-nil-tree`
 
 
 ## Tree属性
@@ -63,7 +63,7 @@
 ```
 import React, { Component } from 'react';
 import TreeStore from 'xtree-store';
-import NilTree from 'nil-tree';
+import NilTree from 'react-nil-tree';
 import data from '../data.json';
 
 export default class DEMO extends Component {
