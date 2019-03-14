@@ -15,7 +15,7 @@ loadData={loadData}
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| prefixCls | 组件CSS样式前缀 | string | rw-listbox |
+| prefixCls | 组件CSS样式前缀 | string | rw-tree |
 | className | 组件className属性 | string | - |
 | style | 组件style属性 | React.CSSProperties | - |
 | rootId | 根节点ID | any | null |
@@ -29,81 +29,42 @@ loadData={loadData}
 | rootComponent | 树形组建根节点类 | ReactElement | div |
 | childNodesWrapperComponent | 子节点列表容器组件类 | ReactElement | ChildNodesWrapper |
 | nodeItemWrapperComponent | 节点容器组件类 | ReactElement | Fragment |
-| renderIndentIcons | 自定义渲染函数 | function | null |
-| renderExpanderIcon | 自定义渲染函数 | function | null |
-| renderLoadingIcon | 自定义渲染函数 | function | null |
-| renderIcon | 自定义渲染函数 | function | null |
-| renderCheckbox | 自定义渲染函数 | function | null |
-| renderLabel | 自定义渲染函数 | function | null |
-| renderExtIcons | 自定义渲染函数 | function | null |
-| renderNode | 自定义渲染函数 | function | null |
-| onNodeClick |  | function | null |
-| onNodeDoubleClick |  | function | null |
-| onNodeContextMenu |  | function | null |
-| onNodeMouseDown |  | function | null |
-| onNodeMouseUp |  | function | null |
-| onNodeMouseEnter |  | function | null |
-| onNodeMouseLeave |  | function | null |
-| onNodeMouseOver |  | function | null |
-| onNodeMouseOut |  | function | null |
-| onNodeMouseMove |  | function | null |
+| renderIndentIcons | 自定义缩进渲染函数 | function(node:Node, props, inst) => ReactNode | null |
+| renderExpanderIcon | 自定义渲染函数 | function(node:Node, props, inst) => ReactNode | null |
+| renderLoadingIcon | 自定义渲染函数 | function(node:Node, props, inst) => ReactNode | null |
+| renderIcon | 自定义渲染函数 | function(node:Node, props, inst) => ReactNode | null |
+| renderCheckbox | 自定义渲染函数 | function(node:Node, props, inst) => ReactNode | null |
+| renderLabel | 自定义渲染函数 | function(node:Node, props, inst) => ReactNode | null |
+| renderExtIcons | 自定义扩展图标函数 | function(node:Node, props, inst) => ReactNode | null |
+| renderNode | 节点自定义渲染函数 | function(node:Node, props, inst) => ReactNode | null |
+| onNodeClick | - | function(node, e, inst) | null |
+| onNodeDoubleClick | - | function(node, e, inst) | null |
+| onNodeContextMenu | - | function(node, e, inst) | null |
+| onNodeMouseDown | - | function(node, e, inst) | null |
+| onNodeMouseUp | - | function(node, e, inst) | null |
+| onNodeMouseEnter | - | function(node, e, inst) | null |
+| onNodeMouseLeave | - | function(node, e, inst) | null |
+| onNodeMouseOver | - | function(node, e, inst) | null |
+| onNodeMouseOut | - | function(node, e, inst) | null |
+| onNodeMouseMove | - | function(node, e, inst) | null |
 
-## Tree属性
+### Node props
 
-```
-{
-    prefixCls: 'nil-tree',
-    className: '',
-    rootId: null,
-    loadingLabel: 'Loading...',
-    loadingComponent: 'div',
-    loadData: null,
-    showIcon: true,
-    showExpanderIcon: true,
-    checkable: false,
-    maxDepth: 50, //最大层级
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| id | 节点ID | any | - |
+| label | 节点显示文本 | ReactNode | - |
+| pid | 父节点 | any | - |
+| leaf | 是否叶子节点 | boolean | - |
+| cls | 节点样式 | boolean | - |
+| iconCls | 节点icon样式 | boolean | - |
+| relativeDepth | `readonly`节点相对当前组件所在深度 | number | - |
+| expanded | 当前节点是否展开 | boolean | - |
+| checked | 当前节点是否checked | boolean | - |
+| loading | `readonly`当前节点是否加载中 | boolean | - |
+| isRoot | `readonly`是否根节点 | boolean | - |
 
-    rootComponent: 'div',
-    childNodesWrapperComponent: ChildNodesWrapper,
-    nodeItemWrapperComponent: Fragment,
-    //自定义
-    renderIndentIcons: null,
-    renderExpanderIcon: null,
-    renderLoadingIcon: null,
-    renderIcon: null,
-    renderCheckbox: null,
-    renderLabel: null,
-    renderExtIcons: null,
-    renderNode: null,
-    //events
-    onNodeClick: noop,
-    onNodeDoubleClick: noop,
-    onNodeContextMenu: noop,
-    onNodeMouseDown: noop,
-    onNodeMouseUp: noop,
-    onNodeMouseEnter: noop,
-    onNodeMouseLeave: noop,
-    onNodeMouseOver: noop,
-    onNodeMouseOut: noop,
-    onNodeMouseMove: noop,
-}
-```
-
-## Node属性
-
-- id
-- label 
-- leaf
-- pid 
-- cls
-- iconCls
-- relativeDepth [readonly]
-- expanded
-- checked
-- loading [readonly]
-- isRoot  [readonly]
-
-## 示例
+### 示例
 
 ```
 import React, { Component } from 'react';
