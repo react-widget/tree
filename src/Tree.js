@@ -11,6 +11,7 @@ export default class Tree extends React.Component {
     static propTypes = {
         prefixCls: PropTypes.string,
         className: PropTypes.string,
+        style: PropTypes.object,
         rootId: PropTypes.any,
         loadingLabel: PropTypes.node,
         loadingComponent: PropTypes.elementType,
@@ -46,6 +47,7 @@ export default class Tree extends React.Component {
     static defaultProps = {
         prefixCls: 'nil-tree',
         className: '',
+        style: {},
         rootId: null,
         loadingLabel: 'Loading...',
         loadingComponent: 'div',
@@ -117,7 +119,7 @@ export default class Tree extends React.Component {
     }
 
     render() {
-        const { prefixCls, className, rootComponent: Component } = this.props;
+        const { prefixCls, className, style, rootComponent: Component } = this.props;
 
         let classes = classNames({
             [prefixCls]: true,
@@ -129,7 +131,7 @@ export default class Tree extends React.Component {
         }
 
         return (
-            <Component className={classes}>
+            <Component className={classes} style={style}>
                 <TreeNode parentProps={this.props} node={this.getRootNode()} isRoot />
             </Component>
         );
