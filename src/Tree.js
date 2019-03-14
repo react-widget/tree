@@ -9,7 +9,38 @@ const noop = () => { };
 export default class Tree extends React.Component {
 
     static propTypes = {
+        prefixCls: PropTypes.string,
+        className: PropTypes.string,
+        rootId: PropTypes.any,
+        loadingLabel: PropTypes.node,
+        loadingComponent: PropTypes.elementType,
         loadData: PropTypes.func,
+        showIcon: PropTypes.bool,
+        showExpanderIcon: PropTypes.bool,
+        checkable: PropTypes.bool,
+        maxDepth: PropTypes.number,
+        rootComponent: PropTypes.elementType,
+        childNodesWrapperComponent: PropTypes.elementType,
+        nodeItemWrapperComponent: PropTypes.elementType,
+        renderIndentIcons: PropTypes.func,
+        renderExpanderIcon: PropTypes.func,
+        renderLoadingIcon: PropTypes.func,
+        renderIcon: PropTypes.func,
+        renderCheckbox: PropTypes.func,
+        renderLabel: PropTypes.func,
+        renderExtIcons: PropTypes.func,
+        renderNode: PropTypes.func,
+        onNodeClick: PropTypes.func,
+        onNodeDoubleClick: PropTypes.func,
+        onNodeContextMenu: PropTypes.func,
+        onNodeMouseDown: PropTypes.func,
+        onNodeMouseUp: PropTypes.func,
+        onNodeMouseEnter: PropTypes.func,
+        onNodeMouseLeave: PropTypes.func,
+        onNodeMouseOver: PropTypes.func,
+        onNodeMouseOut: PropTypes.func,
+        onNodeMouseMove: PropTypes.func,
+
     };
 
     static defaultProps = {
