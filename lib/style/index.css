@@ -7,7 +7,6 @@
     text-align: center; }
   .nil-tree .nil-tree-item {
     height: 20px;
-    display: -ms-flexbox;
     display: flex;
     line-height: 20px;
     cursor: default; }
@@ -54,8 +53,7 @@
     .nil-tree .nil-tree-item .nil-tree-icon-checkbox.checked {
       background-image: url(images/checked.png); }
     .nil-tree .nil-tree-item .nil-tree-label {
-      -ms-flex: 1 1;
-          flex: 1 1;
+      flex: 1 1;
       padding: 0 5px; }
   .nil-tree .nil-tree-item-expanded .nil-tree-icon-parent {
     background-image: url(images/folder-open.gif); }

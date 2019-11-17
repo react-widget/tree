@@ -1,7 +1,7 @@
 const toString = Object.prototype.toString;
 
 export function isFunction(obj) {
-    return toString.call(obj) === '[object Function]';
+    return toString.call(obj) === "[object Function]";
 }
 
 export function isPromiseLike(promise) {
@@ -27,4 +27,31 @@ export function isLeaf(node) {
 
 export function isExpanded(node) {
     return !!node.expanded;
+}
+
+export function toMarked(array = []) {
+    const marked = Object.create(null);
+
+    array.forEach(value => {
+        marked[value] = true;
+    });
+
+    return marked;
+}
+
+export function closest(el, selector) {
+    const matches =
+        Element.prototype.matches ||
+        Element.prototype.msMatchesSelector ||
+        Element.prototype.webkitMatchesSelector;
+
+    if (el.closest) {
+        return el.closest(selector);
+    } else {
+        do {
+            if (matches.call(el, selector)) return el;
+            el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+        return null;
+    }
 }

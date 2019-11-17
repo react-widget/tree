@@ -1,31 +1,26 @@
-import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
-import TreeStore from 'xtree-store';
-import NilTree from 'nil-tree';
-import data from '../data.json';
-
-
+import React, { Component } from "react";
+import { findDOMNode } from "react-dom";
+import TreeStore from "xtree-store";
+import NilTree from "../../../src";
+import data from "../data.json";
 
 class childNodesWrapperComponent extends Component {
-
-    _timer = null
+    _timer = null;
 
     componentDidMount() {
-
         if (this._timer) {
-            clearTimeout(this._timer)
+            clearTimeout(this._timer);
         }
 
         const dom = findDOMNode(this);
         if (dom) {
-            dom.style.height = dom.scrollHeight + 'px';
+            dom.style.height = dom.scrollHeight + "px";
 
             this._timer = setTimeout(() => {
-                dom.style.height = 'auto';
+                dom.style.height = "auto";
                 this._timer = null;
             }, 250);
         }
-
     }
 
     componentDidUpdate() {
@@ -39,38 +34,38 @@ class childNodesWrapperComponent extends Component {
 
         const childs = children();
 
-        return !Array.isArray(childs) ? null :
-            (
-                <div {...others} style={{
-                    transitionProperty: 'all',
-                    transitionDuration: '250ms',
-                    transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        return !Array.isArray(childs) ? null : (
+            <div
+                {...others}
+                style={{
+                    transitionProperty: "all",
+                    transitionDuration: "250ms",
+                    transitionTimingFunction:
+                        "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                     height: 0,
-                    'overflow': 'hidden'
-                }}>
-                    {children()}
-                </div>
-            );
+                    overflow: "hidden",
+                }}
+            >
+                {children()}
+            </div>
+        );
     }
 }
 /**
  * 通过自定义childNodesWrapperComponent属性来实现动画效果
  */
 export default class DEMO extends Component {
-
-    dataStore = {}
+    dataStore = {};
 
     constructor(props) {
         super(props);
 
         this.store = new TreeStore(data, {
-            simpleData: true
+            simpleData: true,
         });
-
     }
 
     loadData = node => {
-
         if (this.dataStore[node.id]) return this.dataStore[node.id];
 
         return new Promise(resolve => {
@@ -78,27 +73,26 @@ export default class DEMO extends Component {
             setTimeout(() => {
                 const childs = server.getChildren(node.id);
                 this.dataStore[node.id] = childs;
-                resolve(childs)
+                resolve(childs);
             }, 500);
         });
-    }
+    };
 
     toggleExpand = (node, e, t) => {
         // node.expanded = !node.expanded;
         // this.forceUpdate();
         // or
-        t.toggleExpand()
-    }
+        t.toggleExpand();
+    };
 
     render() {
         return (
             <NilTree
-                onNodeClick={this.toggleExpand}
+                // onNodeClick={this.toggleExpand}
                 loadData={this.loadData}
                 showIcon
                 childNodesWrapperComponent={childNodesWrapperComponent}
             />
         );
     }
-
 }

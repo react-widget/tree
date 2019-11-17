@@ -1,89 +1,66 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import TreeNode from './TreeNode';
-import ChildNodesWrapper from './ChildNodesWrapper';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import TreeContext from "./TreeContext";
+import Node from "./Node";
+import TreeNode from "./TreeNode";
+import ChildNodesWrapper from "./ChildNodesWrapper";
+import { toMarked } from "./utils";
 
-const noop = () => { };
+const noop = () => {};
 
-export default class Tree extends React.Component {
+class Tree extends React.Component {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const selectedKeys = nextProps.selectedKeys || prevState.selectedKeys;
+        const expandedKeys = nextProps.expandedKeys || prevState.expandedKeys;
+        return {
+            selectedKeys,
+            expandedKeys,
+            selectedMap: toMarked(selectedKeys),
+            expandedMap: toMarked(expandedKeys),
+        };
+    }
 
-    static propTypes = {
-        prefixCls: PropTypes.string,
-        className: PropTypes.string,
-        style: PropTypes.object,
-        rootId: PropTypes.any,
-        loadingLabel: PropTypes.node,
-        loadingComponent: PropTypes.elementType,
-        loadData: PropTypes.func,
-        showIcon: PropTypes.bool,
-        showExpanderIcon: PropTypes.bool,
-        checkable: PropTypes.bool,
-        maxDepth: PropTypes.number,
-        rootComponent: PropTypes.elementType,
-        childNodesWrapperComponent: PropTypes.elementType,
-        nodeItemWrapperComponent: PropTypes.elementType,
-        renderIndentIcons: PropTypes.func,
-        renderExpanderIcon: PropTypes.func,
-        renderLoadingIcon: PropTypes.func,
-        renderIcon: PropTypes.func,
-        renderCheckbox: PropTypes.func,
-        renderLabel: PropTypes.func,
-        renderExtIcons: PropTypes.func,
-        renderNode: PropTypes.func,
-        onNodeClick: PropTypes.func,
-        onNodeDoubleClick: PropTypes.func,
-        onNodeContextMenu: PropTypes.func,
-        onNodeMouseDown: PropTypes.func,
-        onNodeMouseUp: PropTypes.func,
-        onNodeMouseEnter: PropTypes.func,
-        onNodeMouseLeave: PropTypes.func,
-        onNodeMouseOver: PropTypes.func,
-        onNodeMouseOut: PropTypes.func,
-        onNodeMouseMove: PropTypes.func,
+    constructor(props) {
+        super(props);
 
-    };
+        this.state = {
+            selectedKeys: props.defaultSelectedKeys || [],
+            expandedKeys: props.defaultExpandedKeys || [],
+            selectedMap: {},
+            expandedMap: {},
+        };
+    }
 
-    static defaultProps = {
-        prefixCls: 'nil-tree',
-        className: '',
-        style: {},
-        rootId: null,
-        loadingLabel: 'Loading...',
-        loadingComponent: 'div',
-        loadData: null,
-        showIcon: true,
-        showExpanderIcon: true,
-        checkable: false,
-        maxDepth: 50, //最大层级50
+    isLeaf(node) {
+        return node.leaf;
+    }
 
-        rootComponent: 'div',
-        childNodesWrapperComponent: ChildNodesWrapper,
-        nodeItemWrapperComponent: Fragment,
-        //自定义
-        renderIndentIcons: null,
-        renderExpanderIcon: null,
-        renderLoadingIcon: null,
-        renderIcon: null,
-        renderCheckbox: null,
-        renderLabel: null,
-        renderExtIcons: null,
-        renderNode: null,
-        //events
-        onNodeClick: noop,
-        onNodeDoubleClick: noop,
-        onNodeContextMenu: noop,
-        onNodeMouseDown: noop,
-        onNodeMouseUp: noop,
-        onNodeMouseEnter: noop,
-        onNodeMouseLeave: noop,
-        onNodeMouseOver: noop,
-        onNodeMouseOut: noop,
-        onNodeMouseMove: noop,
-    };
+    isExpanded(node) {
+        const { expandedMap } = this.state;
+        return expandedMap[node.id];
+    }
+
+    isSelected(node) {
+        const { selectedMap } = this.state;
+        return selectedMap[node.id];
+    }
 
     getRootNode() {
         const rootId = this.props.rootId;
+
+        const node = new Node(
+            {
+                id: rootId,
+                pid: null,
+                leaf: false,
+            },
+            null,
+            this.props
+        );
+
+        return node;
+
         return {
             //id: this.props.rootId,
             get id() {
@@ -115,11 +92,22 @@ export default class Tree extends React.Component {
                 return 0;
             },
             loading: false,
-        }
+        };
+    }
+
+    getContext() {
+        return {
+            tree: this,
+        };
     }
 
     render() {
-        const { prefixCls, className, style, rootComponent: Component } = this.props;
+        const {
+            prefixCls,
+            className,
+            style,
+            rootComponent: Component,
+        } = this.props;
 
         let classes = classNames({
             [prefixCls]: true,
@@ -131,9 +119,105 @@ export default class Tree extends React.Component {
         }
 
         return (
-            <Component className={classes} style={style}>
-                <TreeNode parentProps={this.props} node={this.getRootNode()} isRoot />
-            </Component>
+            <TreeContext.Provider value={this.getContext()}>
+                <Component className={classes} style={style}>
+                    <TreeNode
+                        parentProps={this.props}
+                        node={this.getRootNode()}
+                        isRoot
+                    />
+                </Component>
+            </TreeContext.Provider>
         );
     }
 }
+
+Tree.propTypes = {
+    prefixCls: PropTypes.string,
+    className: PropTypes.string,
+    style: PropTypes.object,
+    rootId: PropTypes.any,
+    idField: PropTypes.string,
+    leafField: PropTypes.string,
+    pidField: PropTypes.string,
+    labelField: PropTypes.string,
+    loadingLabel: PropTypes.node,
+    loadingComponent: PropTypes.elementType,
+    loadData: PropTypes.func,
+    showIcon: PropTypes.bool,
+    showExpanderIcon: PropTypes.bool,
+    multiple: PropTypes.bool,
+    selectable: PropTypes.bool,
+    unselectable: PropTypes.bool,
+    checkable: PropTypes.bool,
+    maxDepth: PropTypes.number,
+    asyncTestDelay: PropTypes.number,
+    rootComponent: PropTypes.elementType,
+    childNodesWrapperComponent: PropTypes.elementType,
+    nodeItemWrapperComponent: PropTypes.elementType,
+    renderIndentIcons: PropTypes.func,
+    renderExpanderIcon: PropTypes.func,
+    renderLoadingIcon: PropTypes.func,
+    renderIcon: PropTypes.func,
+    renderCheckbox: PropTypes.func,
+    renderLabel: PropTypes.func,
+    renderExtIcons: PropTypes.func,
+    renderNode: PropTypes.func,
+    onNodeClick: PropTypes.func,
+    onNodeDoubleClick: PropTypes.func,
+    onNodeContextMenu: PropTypes.func,
+    onNodeMouseDown: PropTypes.func,
+    onNodeMouseUp: PropTypes.func,
+    onNodeMouseEnter: PropTypes.func,
+    onNodeMouseLeave: PropTypes.func,
+    onNodeMouseOver: PropTypes.func,
+    onNodeMouseOut: PropTypes.func,
+    onNodeMouseMove: PropTypes.func,
+};
+
+Tree.defaultProps = {
+    prefixCls: "nil-tree",
+    className: "",
+    style: {},
+    rootId: null,
+    idField: "id",
+    leafField: "leaf",
+    pidField: "pid",
+    labelField: "label",
+    loadingLabel: "Loading...",
+    loadingComponent: "div",
+    loadData: null,
+    showIcon: true,
+    multiple: false,
+    selectable: true,
+    unselectable: true,
+    showExpanderIcon: true,
+    checkable: false,
+    maxDepth: 50, //最大层级50
+    asyncTestDelay: 16,
+    rootComponent: "div",
+    childNodesWrapperComponent: ChildNodesWrapper,
+    nodeItemWrapperComponent: Fragment,
+    //自定义
+    renderIndentIcons: null,
+    renderExpanderIcon: null,
+    renderLoadingIcon: null,
+    renderIcon: null,
+    renderCheckbox: null,
+    renderLabel: null,
+    renderExtIcons: null,
+    renderNode: null,
+    //events
+    onNodeClick: noop,
+    onNodeDoubleClick: noop,
+    onNodeContextMenu: noop,
+    onNodeMouseDown: noop,
+    onNodeMouseUp: noop,
+    onNodeMouseEnter: noop,
+    onNodeMouseLeave: noop,
+    onNodeMouseOver: noop,
+    onNodeMouseOut: noop,
+    onNodeMouseMove: noop,
+};
+
+export default Tree;
