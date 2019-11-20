@@ -1,33 +1,18 @@
 import React, { Fragment, Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import warning from "warning";
-import { isPromiseLike, isLeaf, isLoading, isExpanded } from "./utils";
+import { isPromiseLike } from "./utils";
 import TreeContext from "./TreeContext";
 import Node from "./Node";
 import NodeItem from "./NodeItem";
 
-export default class TreeNode extends Component {
+class TreeNode extends Component {
     static contextType = TreeContext;
-
-    static propTypes = {
-        parentProps: PropTypes.object,
-        node: PropTypes.object,
-        isRoot: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        parentProps: null,
-        node: null,
-        isRoot: false,
-    };
 
     state = {
         isLoading: false,
         childNodes: null,
     };
-
-    // _shouldUpdate = false;
 
     getTree() {
         return this.context.tree;
@@ -36,65 +21,37 @@ export default class TreeNode extends Component {
         const tree = this.getTree();
         return tree.props;
     }
-    getTreeProp(prop, defaultValue) {
-        const tree = this.getTree();
-        const treeProps = tree.props;
-
-        return prop in treeProps ? treeProps[prop] : defaultValue;
-    }
-
-    // componentDidMount() {
-    //     // this.shouldUpdateTreeNode();
-    // }
-
-    // componentDidUpdate() {
-    //     // this.shouldUpdateTreeNode();
-    // }
-
-    // shouldUpdateTreeNode() {
-    //     if (this._shouldUpdate) {
-    //         this._shouldUpdate = false;
-    //         this.forceUpdate();
-    //     }
-    // }
 
     renderRootLoading() {
-        const {
-            prefixCls,
-            loadingLabel,
-            loadingComponent: LoadingComponent,
-        } = this.props.parentProps;
+        const { rootLoadingComponent: LoadingComponent } = this.getTreeProps();
 
-        if (!loadingLabel) return null;
+        if (!LoadingComponent) return null;
 
-        return (
-            <LoadingComponent className={`${prefixCls}-loading-wrapper`}>
-                {loadingLabel}
-            </LoadingComponent>
-        );
+        return <LoadingComponent />;
     }
 
     renderNodeLoading() {
-        return null;
+        const { nodeLoadingComponent: LoadingComponent } = this.getTreeProps();
+
+        if (!LoadingComponent) return null;
+
+        return <LoadingComponent />;
     }
 
     renderNodeList(list) {
         const tree = this.getTree();
         const { node: pNode } = this.props;
         const options = this.getTreeProps();
+        const state = tree.state;
 
         return list.map((data, i) => {
-            const node = new Node(data, pNode, options);
+            const node = new Node(data, pNode, options, state);
 
-            node.setExpanded(tree.isExpanded(node));
-            node.setSelected(tree.isSelected(node));
-
-            return <TreeNode node={node} key={node.id} />;
+            return <TreeNode node={node} key={node.getId()} />;
         });
     }
 
     renderChildNodes() {
-        const tree = this.getTree();
         const { node, isRoot } = this.props;
         const { isLoading, childNodes } = this.state;
         const { loadData, asyncTestDelay } = this.getTreeProps();
@@ -117,11 +74,9 @@ export default class TreeNode extends Component {
                 asyncTimer = null;
             }
 
-            // this._shouldUpdate = false;
+            const expanded = node.isExpanded();
 
-            const expanded = tree.isExpanded(node);
-
-            node.loading = false;
+            node.setLoading(false);
 
             this.setState(
                 {
@@ -150,7 +105,7 @@ export default class TreeNode extends Component {
             asyncTimer = setTimeout(() => {
                 asyncTimer = null;
 
-                node.loading = true;
+                node.setLoading(true);
 
                 this.setState({
                     isLoading: true,
@@ -164,17 +119,16 @@ export default class TreeNode extends Component {
     }
 
     renderChildNodesWrapper() {
-        const tree = this.getTree();
         const {
             prefixCls,
             maxDepth,
             childNodesWrapperComponent: ChildNodesWrapper,
-        } = tree.props;
+        } = this.getTreeProps();
         const { node } = this.props;
-        const leaf = tree.isLeaf(node);
-        const shouldRender = !leaf && tree.isExpanded(node);
+        const leaf = node.isLeaf();
+        const shouldRender = !leaf && node.isExpanded();
 
-        if (shouldRender && node.relativeDepth >= maxDepth) {
+        if (shouldRender && node.getDepth() >= maxDepth) {
             warning(false, `maximum depth: ${maxDepth}`);
             return null;
         }
@@ -191,10 +145,9 @@ export default class TreeNode extends Component {
     }
 
     render() {
-        const tree = this.getTree();
         const {
             nodeItemWrapperComponent: NodeItemWrapperComponent,
-        } = tree.props;
+        } = this.getTreeProps();
         const { node, isRoot } = this.props;
 
         if (isRoot) {
@@ -208,22 +161,29 @@ export default class TreeNode extends Component {
         //     </div>
         // );
 
-        const wrapProps = {};
+        const props = {};
 
         if (NodeItemWrapperComponent !== Fragment) {
-            wrapProps.node = node;
+            props.node = node;
         }
 
         return (
-            <NodeItemWrapperComponent {...wrapProps}>
-                <NodeItem
-                    node={node}
-                    data={node.data}
-                    // self={this}
-                    // parentProps={parentProps}
-                />
+            <NodeItemWrapperComponent {...props}>
+                <NodeItem node={node} data={node.getData()} />
                 {this.renderChildNodesWrapper()}
             </NodeItemWrapperComponent>
         );
     }
 }
+
+TreeNode.propTypes = {
+    node: PropTypes.object,
+    isRoot: PropTypes.bool,
+};
+
+TreeNode.defaultProps = {
+    node: null,
+    isRoot: false,
+};
+
+export default TreeNode;

@@ -33,8 +33,7 @@ export default class DEMO extends Component {
     };
 
     renderNodeRow = ({ node, props, component: me }) => {
-        const { parentProps } = me.props;
-        const { showIcon, showExpanderIcon, checkable } = parentProps;
+        const { showIcon, showExpanderIcon, checkable } = me.getTreeProps();
 
         return (
             <tr>

@@ -1,22 +1,16 @@
 import React, { Fragment, Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { isLoading, isLeaf, isExpanded, arrayFill, closest } from "./utils";
+import { arrayFill, closest } from "./utils";
 import TreeContext from "./TreeContext";
 
-export default class NodeItem extends Component {
+class NodeItem extends Component {
     static contextType = TreeContext;
-
-    static propTypes = {
-        node: PropTypes.object,
-        data: PropTypes.object,
-    };
-
-    static defaultProps = {};
 
     getTree() {
         return this.context.tree;
     }
+
     getTreeProps() {
         const tree = this.getTree();
         return tree.props;
@@ -40,9 +34,9 @@ export default class NodeItem extends Component {
         const { prefixCls, renderIndentIcons } = this.getTreeProps();
         const { node, data } = this.props;
 
-        const relativeDepth = node.relativeDepth - 1;
+        const depth = node.getDepth() - 1;
 
-        if (relativeDepth <= 0) return null;
+        if (depth <= 0) return null;
 
         const props = {
             className: `${prefixCls}-indent`,
@@ -57,21 +51,20 @@ export default class NodeItem extends Component {
             });
         }
 
-        const indents = arrayFill(Array(relativeDepth), 0);
+        const indents = arrayFill(Array(depth), 0);
 
         return indents.map((v, i) => <div {...props} key={i} />);
     }
 
     renderExpanderIcon() {
-        const tree = this.getTree();
         const { prefixCls, renderExpanderIcon } = this.getTreeProps();
         const { node, data } = this.props;
 
-        const leaf = tree.isLeaf(node);
+        const leaf = node.isLeaf();
         const classes = classNames({
             [`${prefixCls}-icon`]: true,
             [`${prefixCls}-expander-icon`]: !leaf,
-            open: !leaf && tree.isExpanded(node),
+            open: !leaf && node.isExpanded(),
             [`${prefixCls}-indent`]: leaf,
         });
 
@@ -117,11 +110,10 @@ export default class NodeItem extends Component {
     }
 
     renderIcon() {
-        const tree = this.getTree();
         const { prefixCls, renderIcon } = this.getTreeProps();
         const { node, data } = this.props;
 
-        const leaf = tree.isLeaf(node);
+        const leaf = node.isLeaf();
         const classes = classNames({
             [`${prefixCls}-icon`]: true,
             [`${prefixCls}-icon-parent`]: !leaf,
@@ -151,8 +143,8 @@ export default class NodeItem extends Component {
 
         const classes = classNames({
             [`${prefixCls}-icon`]: true,
-            [`${prefixCls}-icon-checkbox`]: true,
-            checked: !!node.checked,
+            // [`${prefixCls}-icon-checkbox`]: true,
+            // checked: !!node.checked,
         });
 
         const props = {
@@ -168,7 +160,8 @@ export default class NodeItem extends Component {
             });
         }
 
-        return <div {...props} />;
+        return null;
+        // return <div {...props} />;
     }
 
     renderLabel() {
@@ -221,6 +214,8 @@ export default class NodeItem extends Component {
             onNodeClick,
         } = treeProps;
 
+        const id = node.getId();
+
         const { selectedKeys, expandedKeys } = tree.state;
         const isExpanderClick = closest(
             e.target,
@@ -235,13 +230,13 @@ export default class NodeItem extends Component {
 
         let newSelectedKeys = selectedKeys;
         const newExpandedKeys = [...expandedKeys];
-        const idx = newExpandedKeys.indexOf(node.id);
+        const idx = newExpandedKeys.indexOf(id);
         const isExpanded = idx !== -1;
-        const sIdx = selectedKeys.indexOf(node.id);
+        const sIdx = selectedKeys.indexOf(id);
         const isSelected = sIdx !== -1;
 
         if (!isSelected && selectable) {
-            newSelectedKeys = multiple ? [...selectedKeys, node.id] : [node.id];
+            newSelectedKeys = multiple ? [...selectedKeys, id] : [id];
 
             if (!isSelectControlled) {
                 newState.selectedKeys = newSelectedKeys;
@@ -266,7 +261,7 @@ export default class NodeItem extends Component {
             if (isExpanded) {
                 newExpandedKeys.splice(idx, 1);
             } else {
-                newExpandedKeys.push(node.id);
+                newExpandedKeys.push(id);
             }
 
             if (!isExpandedControlled) {
@@ -322,10 +317,9 @@ export default class NodeItem extends Component {
         const nodeProps = {
             className: classNames({
                 [`${prefixCls}-item`]: true,
-                [`${prefixCls}-item-selected`]: tree.isSelected(node),
-                //[`${prefixCls}-item-wrapper`]: true,
-                [`${prefixCls}-item-expanded`]: tree.isExpanded(node),
-                [node.cls]: node.cls,
+                [`${prefixCls}-item-selected`]: node.isSelected(),
+                [`${prefixCls}-item-expanded`]: node.isExpanded(),
+                [data.cls]: data.cls,
             }),
             onClick: this.handleNodeClick,
             onDoubleClick: event => {
@@ -397,7 +391,6 @@ export default class NodeItem extends Component {
     }
 
     renderNode() {
-        const tree = this.getTree();
         const { showIcon, showExpanderIcon, checkable } = this.getTreeProps();
         const { node } = this.props;
 
@@ -405,13 +398,13 @@ export default class NodeItem extends Component {
             <div {...this.getNodeProps()}>
                 <Fragment>
                     {this.renderIndentIcons()}
-                    {tree.isLoading(node)
+                    {node.isLoading()
                         ? this.renderLoadingIcon()
                         : // : showExpanderIcon
                           // ? this.renderExpanderIcon() : null
                           this.renderExpanderIcon()}
                     {showIcon ? this.renderIcon() : null}
-                    {checkable ? this.renderCheckbox() : null}
+                    {this.renderCheckbox()}
                     {this.renderLabel()}
                     {this.renderExtIcons()}
                 </Fragment>
@@ -421,10 +414,24 @@ export default class NodeItem extends Component {
 
     render() {
         const { renderNode } = this.getTreeProps();
-        const { node } = this.props;
+        const { node, data } = this.props;
 
         return renderNode
-            ? renderNode(node, this.getNodeProps(), this)
+            ? renderNode({
+                  node,
+                  data,
+                  props: this.getNodeProps(),
+                  component: this,
+              })
             : this.renderNode();
     }
 }
+
+NodeItem.propTypes = {
+    node: PropTypes.object,
+    data: PropTypes.object,
+};
+
+NodeItem.defaultProps = {};
+
+export default NodeItem;

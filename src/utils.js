@@ -17,17 +17,17 @@ export function arrayFill(array, value) {
     return array;
 }
 
-export function isLoading(node) {
-    return node.loading;
-}
+// export function isLoading(node) {
+//     return node.loading;
+// }
 
-export function isLeaf(node) {
-    return !!node.leaf;
-}
+// export function isLeaf(node) {
+//     return !!node.leaf;
+// }
 
-export function isExpanded(node) {
-    return !!node.expanded;
-}
+// export function isExpanded(node) {
+//     return !!node.expanded;
+// }
 
 export function toMarked(array = []) {
     const marked = Object.create(null);
@@ -41,9 +41,7 @@ export function toMarked(array = []) {
 
 export function closest(el, selector) {
     const matches =
-        Element.prototype.matches ||
-        Element.prototype.msMatchesSelector ||
-        Element.prototype.webkitMatchesSelector;
+        el.matches || el.msMatchesSelector || el.webkitMatchesSelector;
 
     if (el.closest) {
         return el.closest(selector);

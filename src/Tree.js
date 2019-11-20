@@ -9,6 +9,10 @@ import { toMarked } from "./utils";
 
 const noop = () => {};
 
+function RootLoadingComponent(props) {
+    return <div {...props}>Loading...</div>;
+}
+
 class Tree extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         const checkedKeys = nextProps.checkedKeys || prevState.checkedKeys;
@@ -37,23 +41,23 @@ class Tree extends React.Component {
         };
     }
 
-    isLoading(node) {
-        return node.loading;
-    }
+    // isLoading(node) {
+    //     return node.loading;
+    // }
 
-    isLeaf(node) {
-        return node.leaf;
-    }
+    // isLeaf(node) {
+    //     return node.leaf;
+    // }
 
-    isExpanded(node) {
-        const { expandedMap } = this.state;
-        return expandedMap[node.id];
-    }
+    // isExpanded(node) {
+    //     const { expandedMap } = this.state;
+    //     return expandedMap[node.id];
+    // }
 
-    isSelected(node) {
-        const { selectedMap } = this.state;
-        return selectedMap[node.id];
-    }
+    // isSelected(node) {
+    //     const { selectedMap } = this.state;
+    //     return selectedMap[node.id];
+    // }
 
     getRootNode() {
         const { rootId, idField, pidField, leafField } = this.props;
@@ -65,7 +69,8 @@ class Tree extends React.Component {
                 [leafField]: false,
             },
             null,
-            this.props
+            this.props,
+            this.state
         );
 
         return node;
@@ -150,15 +155,14 @@ Tree.propTypes = {
     leafField: PropTypes.string,
     pidField: PropTypes.string,
     labelField: PropTypes.string,
-    loadingLabel: PropTypes.node,
-    loadingComponent: PropTypes.elementType,
+    rootLoadingComponent: PropTypes.elementType,
+    nodeLoadingComponent: PropTypes.elementType,
     loadData: PropTypes.func,
     showIcon: PropTypes.bool,
     showExpanderIcon: PropTypes.bool,
     multiple: PropTypes.bool,
     selectable: PropTypes.bool,
     unselectable: PropTypes.bool,
-    checkable: PropTypes.bool,
     maxDepth: PropTypes.number,
     asyncTestDelay: PropTypes.number,
     rootComponent: PropTypes.elementType,
@@ -172,6 +176,8 @@ Tree.propTypes = {
     renderLabel: PropTypes.func,
     renderExtIcons: PropTypes.func,
     renderNode: PropTypes.func,
+    onSelect: PropTypes.func,
+    onExpand: PropTypes.func,
     onNodeClick: PropTypes.func,
     onNodeDoubleClick: PropTypes.func,
     onNodeContextMenu: PropTypes.func,
@@ -193,15 +199,13 @@ Tree.defaultProps = {
     leafField: "leaf",
     pidField: "pid",
     labelField: "label",
-    loadingLabel: "Loading...",
-    loadingComponent: "div",
+    rootLoadingComponent: RootLoadingComponent,
     loadData: null,
     showIcon: true,
     multiple: false,
     selectable: true,
     unselectable: true,
     showExpanderIcon: true,
-    checkable: false,
     maxDepth: 99, //最大层级99   Number.MAX_VALUE
     asyncTestDelay: 16,
     rootComponent: "div",
@@ -217,6 +221,8 @@ Tree.defaultProps = {
     renderExtIcons: null,
     renderNode: null,
     //events
+    onSelect: noop,
+    onExpand: noop,
     onNodeClick: noop,
     onNodeDoubleClick: noop,
     onNodeContextMenu: noop,
