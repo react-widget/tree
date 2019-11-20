@@ -9,10 +9,21 @@ import NodeItem from "./NodeItem";
 class TreeNode extends Component {
     static contextType = TreeContext;
 
-    state = {
-        isLoading: false,
-        childNodes: null,
-    };
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            isLoading: false,
+            childNodes: null,
+        };
+
+        const tree = this.getTree();
+        tree.registerTreeNode(this);
+    }
+
+    componentWillUnmount() {
+        const tree = this.getTree();
+        tree.unregisterTreeNode(this);
+    }
 
     getTree() {
         return this.context.tree;

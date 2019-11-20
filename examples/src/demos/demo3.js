@@ -53,6 +53,7 @@ export default class DEMO extends Component {
     render() {
         return (
             <NilTree
+                singleExpand
                 renderIndentIcons={this.renderIndentIcons}
                 renderExpanderIcon={this.renderExpanderIcon}
                 loadData={this.loadData}

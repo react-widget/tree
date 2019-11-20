@@ -207,6 +207,7 @@ class NodeItem extends Component {
         const {
             prefixCls,
             multiple,
+            singleExpand,
             selectable,
             unselectable,
             onSelect,
@@ -229,7 +230,7 @@ class NodeItem extends Component {
         const isExpandedControlled = "expandedKeys" in treeProps;
 
         let newSelectedKeys = selectedKeys;
-        const newExpandedKeys = [...expandedKeys];
+        let newExpandedKeys = [...expandedKeys];
         const idx = newExpandedKeys.indexOf(id);
         const isExpanded = idx !== -1;
         const sIdx = selectedKeys.indexOf(id);
@@ -261,6 +262,14 @@ class NodeItem extends Component {
             if (isExpanded) {
                 newExpandedKeys.splice(idx, 1);
             } else {
+                if (singleExpand) {
+                    newExpandedKeys = newExpandedKeys.filter(id => {
+                        const sNode = tree.getNode(id);
+                        if (!sNode) return true;
+                        return sNode.getDepth() !== node.getDepth();
+                    });
+                }
+
                 newExpandedKeys.push(id);
             }
 

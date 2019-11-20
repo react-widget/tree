@@ -39,25 +39,38 @@ class Tree extends React.Component {
             selectedMap: {},
             expandedMap: {},
         };
+
+        this.treeNodes = [];
+        this.treeNodesMap = Object.create(null);
     }
 
-    // isLoading(node) {
-    //     return node.loading;
-    // }
+    registerTreeNode(tNode) {
+        const { node } = tNode.props;
+        const id = node.getId();
+        this.treeNodes.push(tNode);
+        this.treeNodesMap[id] = tNode;
+    }
 
-    // isLeaf(node) {
-    //     return node.leaf;
-    // }
+    unregisterTreeNode(tNode) {
+        const { node } = tNode.props;
+        const id = node.getId();
+        const prevTNode = this.treeNodesMap[id];
 
-    // isExpanded(node) {
-    //     const { expandedMap } = this.state;
-    //     return expandedMap[node.id];
-    // }
+        const idx = this.treeNodes.indexOf(tNode);
 
-    // isSelected(node) {
-    //     const { selectedMap } = this.state;
-    //     return selectedMap[node.id];
-    // }
+        this.treeNodes.splice(idx, 1);
+
+        if (prevTNode === tNode) {
+            this.treeNodesMap[id] = null;
+            delete this.treeNodesMap[id];
+        }
+    }
+
+    getNode(id) {
+        const treeNode = this.treeNodesMap[id];
+
+        return treeNode ? treeNode.props.node : null;
+    }
 
     getRootNode() {
         const { rootId, idField, pidField, leafField } = this.props;
@@ -163,6 +176,7 @@ Tree.propTypes = {
     multiple: PropTypes.bool,
     selectable: PropTypes.bool,
     unselectable: PropTypes.bool,
+    singleExpand: PropTypes.bool,
     maxDepth: PropTypes.number,
     asyncTestDelay: PropTypes.number,
     rootComponent: PropTypes.elementType,
@@ -205,6 +219,7 @@ Tree.defaultProps = {
     multiple: false,
     selectable: true,
     unselectable: true,
+    singleExpand: false,
     showExpanderIcon: true,
     maxDepth: 99, //最大层级99   Number.MAX_VALUE
     asyncTestDelay: 16,
