@@ -11,11 +11,14 @@ const noop = () => {};
 
 class Tree extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
+        const checkedKeys = nextProps.checkedKeys || prevState.checkedKeys;
         const selectedKeys = nextProps.selectedKeys || prevState.selectedKeys;
         const expandedKeys = nextProps.expandedKeys || prevState.expandedKeys;
         return {
+            checkedKeys,
             selectedKeys,
             expandedKeys,
+            checkedMap: toMarked(checkedKeys),
             selectedMap: toMarked(selectedKeys),
             expandedMap: toMarked(expandedKeys),
         };
@@ -25,11 +28,17 @@ class Tree extends React.Component {
         super(props);
 
         this.state = {
+            checkedKeys: props.defaultCheckedKeys || [],
             selectedKeys: props.defaultSelectedKeys || [],
             expandedKeys: props.defaultExpandedKeys || [],
+            checkedMap: {},
             selectedMap: {},
             expandedMap: {},
         };
+    }
+
+    isLoading(node) {
+        return node.loading;
     }
 
     isLeaf(node) {
@@ -47,13 +56,13 @@ class Tree extends React.Component {
     }
 
     getRootNode() {
-        const rootId = this.props.rootId;
+        const { rootId, idField, pidField, leafField } = this.props;
 
         const node = new Node(
             {
-                id: rootId,
-                pid: null,
-                leaf: false,
+                [idField]: rootId,
+                [pidField]: null,
+                [leafField]: false,
             },
             null,
             this.props
@@ -193,7 +202,7 @@ Tree.defaultProps = {
     unselectable: true,
     showExpanderIcon: true,
     checkable: false,
-    maxDepth: 50, //最大层级50
+    maxDepth: 99, //最大层级99   Number.MAX_VALUE
     asyncTestDelay: 16,
     rootComponent: "div",
     childNodesWrapperComponent: ChildNodesWrapper,

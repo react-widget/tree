@@ -101,4 +101,8 @@ $prefix: nil-tree;
             background-image: url(images/folder-open.gif);
         }
     }
+
+    .#{$prefix}-item-selected {
+        background-color: #efefef;
+    }
 }

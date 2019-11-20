@@ -27,20 +27,7 @@ export default class DEMO extends Component {
         });
     };
 
-    toggleExpand = (node, e, t) => {
-        // node.expanded = !node.expanded;
-        // this.forceUpdate();
-        // or
-        t.toggleExpand();
-    };
-
     render() {
-        return (
-            <NilTree
-                // onNodeClick={this.toggleExpand}
-                loadData={this.loadData}
-                showIcon
-            />
-        );
+        return <NilTree loadData={this.loadData} showIcon />;
     }
 }

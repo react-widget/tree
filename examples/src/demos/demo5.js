@@ -32,14 +32,7 @@ export default class DEMO extends Component {
         });
     };
 
-    toggleExpand = (node, e, t) => {
-        // node.expanded = !node.expanded;
-        // this.forceUpdate();
-        // or
-        t.toggleExpand();
-    };
-
-    renderNodeRow = (node, props, me) => {
+    renderNodeRow = ({ node, props, component: me }) => {
         const { parentProps } = me.props;
         const { showIcon, showExpanderIcon, checkable } = parentProps;
 
@@ -84,7 +77,6 @@ export default class DEMO extends Component {
                     </tr>
                 </thead>
                 <NilTree
-                    onNodeClick={this.toggleExpand}
                     loadData={this.loadData}
                     rootComponent="tbody"
                     loadingComponent={props => (

@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { isLoading, isPromiseLike } from './utils'
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import { isLoading, isPromiseLike } from "./utils";
 
 export default class ChildNodesContainer extends Component {
-
     static propTypes = {
         expanded: PropTypes.bool,
         node: PropTypes.object,
@@ -20,9 +19,9 @@ export default class ChildNodesContainer extends Component {
 
         const results = children();
 
-        if (isPromiseLike(results)) {
-            return null;
-        }
+        // if (isPromiseLike(results)) {
+        //     return null;
+        // }
 
         return <Fragment>{results}</Fragment>;
     }

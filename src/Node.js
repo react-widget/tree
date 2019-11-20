@@ -9,10 +9,10 @@ export default class Node {
             leafField = "leaf",
         } = options;
 
-        // this.loading = false;
+        this.loading = false;
+        this.selected = false;
         this.root = !parentNode;
-        // this.expanded = parentNode === rootId;
-        // this.selected = false;
+        this.expanded = this.root;
         this.relativeDepth = parentNode ? parentNode.relativeDepth + 1 : 0;
 
         this.id = data[idField];
@@ -25,11 +25,11 @@ export default class Node {
         }
     }
 
-    // setExpanded(expanded) {
-    //     this.expanded = expanded;
-    // }
+    setExpanded(expanded) {
+        this.expanded = expanded;
+    }
 
-    // setSelected(selected) {
-    //     this.selected = selected;
-    // }
+    setSelected(selected) {
+        this.selected = selected;
+    }
 }

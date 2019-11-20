@@ -8,9 +8,8 @@ export default class NodeItem extends Component {
     static contextType = TreeContext;
 
     static propTypes = {
-        parentProps: PropTypes.object,
-        self: PropTypes.object,
         node: PropTypes.object,
+        data: PropTypes.object,
     };
 
     static defaultProps = {};
@@ -18,15 +17,9 @@ export default class NodeItem extends Component {
     getTree() {
         return this.context.tree;
     }
-    getTreeProps(prop) {
+    getTreeProps() {
         const tree = this.getTree();
         return tree.props;
-    }
-    getTreeProp(prop, defaultValue) {
-        const tree = this.getTree();
-        const treeProps = tree.props;
-
-        return prop in treeProps ? treeProps[prop] : defaultValue;
     }
 
     getNode() {
@@ -51,17 +44,22 @@ export default class NodeItem extends Component {
 
         if (relativeDepth <= 0) return null;
 
-        const indentProps = {
+        const props = {
             className: `${prefixCls}-indent`,
         };
 
         if (renderIndentIcons) {
-            return renderIndentIcons(data, indentProps, this);
+            return renderIndentIcons({
+                data,
+                node,
+                props,
+                component: this,
+            });
         }
 
         const indents = arrayFill(Array(relativeDepth), 0);
 
-        return indents.map((v, i) => <div {...indentProps} key={i} />);
+        return indents.map((v, i) => <div {...props} key={i} />);
     }
 
     renderExpanderIcon() {
@@ -77,41 +75,53 @@ export default class NodeItem extends Component {
             [`${prefixCls}-indent`]: leaf,
         });
 
-        const expanderProps = {
+        const props = {
             className: classes,
         };
 
         if (renderExpanderIcon) {
-            return renderExpanderIcon(data, expanderProps, this);
+            return renderExpanderIcon({
+                data,
+                node,
+                props,
+                component: this,
+            });
         }
 
-        return <div {...expanderProps} />;
+        return <div {...props} />;
     }
 
     renderLoadingIcon() {
         const { prefixCls, renderLoadingIcon } = this.getTreeProps();
-        const { data } = this.props;
+        const { node, data } = this.props;
 
         const classes = classNames({
             [`${prefixCls}-icon`]: true,
             [`${prefixCls}-loading-icon`]: true,
         });
 
-        const loadingProps = {
+        const props = {
             className: classes,
         };
 
-        if (renderLoadingIcon)
-            return renderLoadingIcon(data, loadingProps, this);
+        if (renderLoadingIcon) {
+            return renderLoadingIcon({
+                data,
+                node,
+                props,
+                component: this,
+            });
+        }
 
-        return <div {...loadingProps} />;
+        return <div {...props} />;
     }
 
     renderIcon() {
+        const tree = this.getTree();
         const { prefixCls, renderIcon } = this.getTreeProps();
         const { node, data } = this.props;
 
-        const leaf = isLeaf(node);
+        const leaf = tree.isLeaf(node);
         const classes = classNames({
             [`${prefixCls}-icon`]: true,
             [`${prefixCls}-icon-parent`]: !leaf,
@@ -119,13 +129,20 @@ export default class NodeItem extends Component {
             [data.iconCls]: data.iconCls,
         });
 
-        const iconProps = {
+        const props = {
             className: classes,
         };
 
-        if (renderIcon) return renderIcon(data, iconProps, this);
+        if (renderIcon) {
+            return renderIcon({
+                data,
+                node,
+                props,
+                component: this,
+            });
+        }
 
-        return <div {...iconProps} />;
+        return <div {...props} />;
     }
 
     renderCheckbox() {
@@ -138,33 +155,56 @@ export default class NodeItem extends Component {
             checked: !!node.checked,
         });
 
-        const checkboxProps = {
+        const props = {
             className: classes,
         };
 
-        if (renderCheckbox) return renderCheckbox(data, checkboxProps, this);
+        if (renderCheckbox) {
+            return renderCheckbox({
+                data,
+                node,
+                props,
+                component: this,
+            });
+        }
 
-        return <div {...checkboxProps} />;
+        return <div {...props} />;
     }
 
     renderLabel() {
         const { prefixCls, labelField, renderLabel } = this.getTreeProps();
-        const { data } = this.props;
+        const { node, data } = this.props;
 
-        const labelProps = {
+        const props = {
             className: `${prefixCls}-label`,
         };
 
-        if (renderLabel) return renderLabel(data, labelProps, this);
+        if (renderLabel) {
+            return renderLabel({
+                data,
+                node,
+                props,
+                component: this,
+            });
+        }
 
-        return <div {...labelProps}>{data[labelField]}</div>;
+        return <div {...props}>{data[labelField]}</div>;
     }
 
     renderExtIcons() {
         const { renderExtIcons } = this.getTreeProps();
-        const { data } = this.props;
+        const { node, data } = this.props;
 
-        if (renderExtIcons) return renderExtIcons(data, {}, this);
+        if (renderExtIcons) {
+            return renderExtIcons({
+                data,
+                node,
+                props: {},
+                component: this,
+            });
+        }
+
+        return null;
     }
 
     handleNodeClick = e => {
@@ -246,7 +286,7 @@ export default class NodeItem extends Component {
             });
         }
 
-        if (onExpand) {
+        if (isExpanderClick && onExpand) {
             onExpand(newExpandedKeys, {
                 event: e,
                 node: data,
@@ -255,17 +295,19 @@ export default class NodeItem extends Component {
         }
 
         if (onNodeClick) {
-            onNodeClick(e);
+            onNodeClick({
+                event: e,
+                node: data,
+            });
         }
     };
 
     getNodeProps() {
-        const { node, self } = this.props;
+        const tree = this.getTree();
+        const { node, data } = this.props;
+
         const {
             prefixCls,
-            onSelect,
-            onExpand,
-            onNodeClick,
             onNodeDoubleClick,
             onNodeContextMenu,
             onNodeMouseDown,
@@ -280,37 +322,74 @@ export default class NodeItem extends Component {
         const nodeProps = {
             className: classNames({
                 [`${prefixCls}-item`]: true,
+                [`${prefixCls}-item-selected`]: tree.isSelected(node),
                 //[`${prefixCls}-item-wrapper`]: true,
+                [`${prefixCls}-item-expanded`]: tree.isExpanded(node),
                 [node.cls]: node.cls,
-                [`${prefixCls}-item-expanded`]: isExpanded(node),
             }),
             onClick: this.handleNodeClick,
-            onDoubleClick: e => {
-                onNodeDoubleClick(node, e, self);
+            onDoubleClick: event => {
+                onNodeDoubleClick({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onContextMenu: e => {
-                onNodeContextMenu(node, e, self);
+            onContextMenu: event => {
+                onNodeContextMenu({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onMouseDown: e => {
-                onNodeMouseDown(node, e, self);
+            onMouseDown: event => {
+                onNodeMouseDown({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onMouseUp: e => {
-                onNodeMouseUp(node, e, self);
+            onMouseUp: event => {
+                onNodeMouseUp({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onMouseEnter: e => {
-                onNodeMouseEnter(node, e, self);
+            onMouseEnter: event => {
+                onNodeMouseEnter({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onMouseLeave: e => {
-                onNodeMouseLeave(node, e, self);
+            onMouseLeave: event => {
+                onNodeMouseLeave({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onMouseOver: e => {
-                onNodeMouseOver(node, e, self);
+            onMouseOver: event => {
+                onNodeMouseOver({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onMouseOut: e => {
-                onNodeMouseOut(node, e, self);
+            onMouseOut: event => {
+                onNodeMouseOut({
+                    event,
+                    node,
+                    data,
+                });
             },
-            onMouseMove: e => {
-                onNodeMouseMove(node, e, self);
+            onMouseMove: event => {
+                onNodeMouseMove({
+                    event,
+                    node,
+                    data,
+                });
             },
         };
 
@@ -318,6 +397,7 @@ export default class NodeItem extends Component {
     }
 
     renderNode() {
+        const tree = this.getTree();
         const { showIcon, showExpanderIcon, checkable } = this.getTreeProps();
         const { node } = this.props;
 
@@ -325,11 +405,11 @@ export default class NodeItem extends Component {
             <div {...this.getNodeProps()}>
                 <Fragment>
                     {this.renderIndentIcons()}
-                    {isLoading(node)
+                    {tree.isLoading(node)
                         ? this.renderLoadingIcon()
-                        : showExpanderIcon
-                        ? this.renderExpanderIcon()
-                        : null}
+                        : // : showExpanderIcon
+                          // ? this.renderExpanderIcon() : null
+                          this.renderExpanderIcon()}
                     {showIcon ? this.renderIcon() : null}
                     {checkable ? this.renderCheckbox() : null}
                     {this.renderLabel()}

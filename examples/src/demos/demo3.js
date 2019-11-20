@@ -18,14 +18,7 @@ export default class DEMO extends Component {
         return store.getChildren(node.id);
     };
 
-    toggleExpand = (node, e, t) => {
-        // node.expanded = !node.expanded;
-        // this.forceUpdate();
-        //or
-        t.toggleExpand();
-    };
-
-    renderIndentIcons = (node, props, item) => {
+    renderIndentIcons = ({ node, props }) => {
         const store = this.store;
         const pIds = store.getParentIds(node.id);
 
@@ -41,7 +34,7 @@ export default class DEMO extends Component {
         });
     };
 
-    renderExpanderIcon = (node, props, item) => {
+    renderExpanderIcon = ({ node, props }) => {
         const store = this.store;
         const isLastChild = store.isLastChild(node.id);
 
@@ -60,7 +53,6 @@ export default class DEMO extends Component {
     render() {
         return (
             <NilTree
-                // onNodeClick={this.toggleExpand}
                 renderIndentIcons={this.renderIndentIcons}
                 renderExpanderIcon={this.renderExpanderIcon}
                 loadData={this.loadData}
