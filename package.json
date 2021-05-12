@@ -15,7 +15,7 @@
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "node-sass": "^4.13.0",
         "packez": "^2.5.4",
-        "postcss": "^7.0.21",
+        "postcss": "^8.2.10",
         "postcss-flexbugs-fixes": "^4.1.0",
         "postcss-preset-env": "^6.7.0",
         "sass-loader": "^8.0.0",
