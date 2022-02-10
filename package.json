@@ -13,7 +13,7 @@
     },
     "devDependencies": {
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-        "node-sass": "^4.13.0",
+        "node-sass": "^7.0.0",
         "packez": "^2.5.4",
         "postcss": "^7.0.21",
         "postcss-flexbugs-fixes": "^4.1.0",
